@@ -1,14 +1,16 @@
 from django.shortcuts import render
-from models import *
+from .models import *
 
 
 
 def job_list(request):
-    return render(request, template_name, {})
+    job_list = Job.objects.all(),
+    context = {}
+    return render(request, "Job/job_list.html", {})
 
 
 
 def job_details(request, id):
-    return render(request, template_name, {})
+    return render(request, "Job/job_details.html", {})
     
 
