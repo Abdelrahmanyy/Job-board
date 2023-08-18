@@ -4,19 +4,25 @@ from .models import *
 from .forms import *
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from .filters import *
 
 
 def job_list(request):
     job_list = Job.objects.all() 
 
+    # filters 
+    myfilter = JobFilter(request.GET, queryset=job_list)
+    job_list = myfilter.qs 
+
     paginator = Paginator(job_list, 3) 
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)  
+    page_obj = paginator.get_page(page_number) 
+
 
     context = {
         "jobs":page_obj ,
         "job_list":job_list ,
+        "myfilter":myfilter ,
     }
     return render(request, "Job/job_list.html", context)
 
