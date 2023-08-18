@@ -1,14 +1,16 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 
 def job_list(request):
     job_list = Job.objects.all() 
 
-    paginator = Paginator(job_list, 1) 
+    paginator = Paginator(job_list, 3) 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)  
 
@@ -20,8 +22,8 @@ def job_list(request):
 
 
 
-def job_details(request, slug):
-    job_details = Job.objects.get(slug=slug)
+def job_details(request, id):
+    job_details = Job.objects.get(id=id)
 
     if request.method== 'POST':
         form = ApplyForm(request.POST , request.FILES)
@@ -37,5 +39,25 @@ def job_details(request, slug):
         'form':form ,
     }    
     return render(request, "Job/job_details.html", context)
+
+
+@login_required
+def add_job(request):
+
+    if request.method=='POST':
+        form = JobForm(request.POST, request.FILES)
+        if form.is_valid():
+            myform = form.save(commit=False)
+            myform.owner = request.user 
+            myform.save()
+            return redirect('/jobs')
+
+    else:
+        form = JobForm()    
+
+
+
+    return render(request, 'Job/add_job.html', {'form':form})
+        
     
 

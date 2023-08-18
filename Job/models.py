@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -12,6 +13,7 @@ Job_type = (
 )
 
 class Job(models.Model):
+    owner = models.ForeignKey(User, related_name='job_owner', on_delete=models.CASCADE)
     title = models.CharField(max_length = 150)
     Job_type = models.CharField(max_length = 15, choices=Job_type)
     description = models.TextField(max_length = 1000)
@@ -19,7 +21,7 @@ class Job(models.Model):
     vacancy = models.IntegerField(default=1)
     salary = models.IntegerField(default=0)
     experience = models.IntegerField(default=1)
-    image = models.ImageField(upload_to='jobs/%y/%m/%d')
+    image = models.ImageField(upload_to='jobs/%y/%m/%d', null=True, blank=True)
     Category = models.ForeignKey('Category', on_delete=models.CASCADE)
     
     slug = models.SlugField(null=True, blank=True)
