@@ -24,7 +24,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('', include('Job.urls')),     
-    path('contact_us/', include('contact.urls')),     
+    path('contact/', include('contact.urls')),
+    path('api-auth/', include('rest_framework.urls'))     
 
 ]
 
