@@ -16,7 +16,7 @@ urlpatterns = [
     path('api/jobs/<int:id>', api.job_detail_api, name='job_detail_api'),
 
 
-    # class based views
+    # class based views.
     path('api/v2/jobs', api.JobListApi.as_view(), name='JobListApi'),
     path('api/v2/jobs/<int:id>', api.Job_detail.as_view(), name='Job_detail'),
 
